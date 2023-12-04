@@ -1,0 +1,3 @@
+# prevents the .env file from being uploaded to github
+# since it contains my Mongodb account info and other sensitive data
+.env
