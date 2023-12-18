@@ -12,24 +12,26 @@ const Navbar = () => {
 
     return (
         <header>
-            <div className="container">
-                <Link to="/">
-                    <h1>Workout App</h1>
-                </Link>
+            <div>
+            {user && (
+                <div className="container">
+                <h1>Welcome, {user.firstname}</h1>
                 <nav>
-                    {user && (
-                    <div>
-                        <span>{user.email}</span>
-                       <button onClick={handleClick}>Log out</button> 
-                    </div>
-                    )}
-                    {!user && (
-                    <div>
-                        <Link to="/login">Login</Link>
-                        <Link to="/signup">Signup</Link>
-                    </div>
-                    )}
+                    <button onClick={handleClick}>Log out</button> 
                 </nav>
+                </div>
+                )}
+            {!user && (
+                <div className="container">
+                    <Link to="/">
+                    <h1>Greek Physique</h1>
+                    </Link>
+                    <nav>
+                    <Link to="/login">Login</Link>
+                    <Link to="/signup">Signup</Link>
+                    </nav>
+                </div>
+                )}
             </div>
         </header>
     )

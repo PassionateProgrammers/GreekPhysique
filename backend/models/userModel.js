@@ -5,10 +5,18 @@ const validator = require('validator')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
+    firstname: {
+        type: String,
+        required: true
+    },
+    lastname: {
+        type: String,
+        required: true
+    },
     email: {
-    type: String,
-    required: true,
-    unique: true
+        type: String,
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -17,10 +25,10 @@ const userSchema = new Schema({
 })
 
 //static signup method
-userSchema.statics.signup = async function(email, password) {
+userSchema.statics.signup = async function(firstname, lastname, email, password) {
 
     //validation
-    if (!email || !password) {
+    if (!firstname || !lastname || !email || !password) {
         throw Error('All Fields Required')
     }
 
@@ -32,7 +40,9 @@ userSchema.statics.signup = async function(email, password) {
         throw Error('Password must be a minimum of 8 characters and include at least one of each: uppercase, lowercase, number, symbol')
     }
 
-    const exists = await this.findOne({ email })
+    const normalizedEmail = email.toLowerCase()
+    
+    const exists = await this.findOne({ email: normalizedEmail })
 
     if(exists) {
         throw Error(('Email already in use'))
@@ -41,7 +51,7 @@ userSchema.statics.signup = async function(email, password) {
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
 
-    const user = await this.create({ email, password: hash})
+    const user = await this.create({ firstname, lastname, email: normalizedEmail, password: hash})
 
     return user
 }
