@@ -7,12 +7,14 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 //components
 import Navbar from './components/Navbar'
+import './App.css';
 
 function App() {
   const { user } = useAuthContext()
 
   return (
     <div className="App">
+      <header className="App-header">
       <BrowserRouter>
       <Navbar />
       <div className="pages">
@@ -26,10 +28,11 @@ function App() {
         </Routes>
         <Routes>
           <Route path="/signup"
-           element={!user ? <Signup /> : <Navigate to="/" />} />
+          element={!user ? <Signup /> : <Navigate to="/" />} />
         </Routes>
       </div>
       </BrowserRouter>
+      </header>
     </div>
   );
 }

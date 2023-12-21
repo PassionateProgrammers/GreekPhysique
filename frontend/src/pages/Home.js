@@ -30,13 +30,16 @@ const Home = () => {
 
     }, [dispatch, user])
     return (
-        <div className="home">
+        <div className="workoutcontainer">
             <div className="workouts">
+                <h2>Your Workouts</h2>
                 {workouts && workouts.map((workout) => (
                     <WorkoutDetails key={workout._id} workout={workout}/>
                 ))}
             </div>
+            <div className='workoutform'>
             <WorkoutForm />
+            </div>
         </div>
     )
 }
