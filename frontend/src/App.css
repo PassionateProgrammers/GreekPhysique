@@ -1,0 +1,12 @@
+
+  .App-header {
+    background-color: var(--background);
+    min-height: 100vh;
+    color: var(--primary);
+  }
+  
+  .App-link {
+    color: var(--primary)
+  }
+  
+  
