@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 require('dotenv').config()
 
 //express application
@@ -6,6 +7,10 @@ const app = express()
 const mongoose = require('mongoose')
 const workoutRoutes = require('./routes/workouts')
 const userRoutes = require('./routes/user')
+
+
+//cors
+app.use(cors())
 
 app.use(express.json())
 app.use((req, res, next) => {
