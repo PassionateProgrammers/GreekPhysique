@@ -1,47 +1,40 @@
-import { useEffect } from 'react'
-import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
-import { useAuthContext } from '../hooks/useAuthContext'
-
-//components
-import WorkoutDetails from '../components/WorkoutDetails'
-import WorkoutForm from '../components/WorkoutForm'
+import React, { useState, useEffect, useCallback } from 'react';
+import Card from '../components/Card';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const Home = () => {
+  const { user } = useAuthContext();
+  const [exercises, setExercises] = useState([]);
 
-    const {workouts, dispatch} = useWorkoutsContext()
-    const {user} = useAuthContext()
+  // Function to fetch exercises for the selected program
+  const fetchExercises = useCallback(async () => {
+    if (user.programs && user.user.selectedProgram) {
+      const selectedProgram = user.programs.find((program) => program.name === user.user.selectedProgram);
+      if (selectedProgram) {
+        setExercises(selectedProgram.exercises);
+      }
+    }
+    else {
+      if (user && user.user.selectedProgram) {
+      const selectedProgram = user.user.programs.find((program) => program.name === user.user.selectedProgram);
+      if (selectedProgram) {
+        setExercises(selectedProgram.exercises);
+      }
+    }}
+  }, [user]);
 
-    useEffect(() => {
-        const fetchWorkouts = async () => {
-            const response = await fetch('https://greekphysiqueserver.onrender.com/api/workouts', {
-                headers: {
-                    'Authorization': `Bearer ${user.token}`
-                }
-            })
-            const json = await response.json()
+  // Fetch exercises on component mount and whenever user or selectedProgram changes
+  useEffect(() => {
+    fetchExercises();
+  }, [fetchExercises, user, user.user.selectedProgram]);
 
-            if(response.ok) {
-                dispatch({type: 'SET_WORKOUTS', payload: json})
-            }
-        }
-        if (user) {
-        fetchWorkouts()
-        }
+  return (
+    <div className='home z-0 w-screen'>
+      {exercises.map((exercise) => (
+        <Card key={exercise._id} exercise={exercise} />
+      ))}
+    </div>
+  );
+};
 
-    }, [dispatch, user])
-    return (
-        <div className="workoutcontainer">
-            <div className="workouts">
-                <h2>Your Workouts</h2>
-                {workouts && workouts.map((workout) => (
-                    <WorkoutDetails key={workout._id} workout={workout}/>
-                ))}
-            </div>
-            <div className='workoutform'>
-            <WorkoutForm />
-            </div>
-        </div>
-    )
-}
-
-export default Home
+export default Home;

@@ -1,7 +1,7 @@
 const express = require('express')
 
 //controller functions
-const { signupUser, loginUser} = require('../controllers/userController')
+const { signupUser, loginUser, addExercise } = require('../controllers/userController')
 
 const router = express.Router()
 
@@ -10,5 +10,8 @@ router.post('/login', loginUser)
 
 //singup route
 router.post('/signup', signupUser)
+
+// Add exercises to program route
+router.post('/:userId/program/:programId/add-exercise', addExercise);
 
 module.exports = router

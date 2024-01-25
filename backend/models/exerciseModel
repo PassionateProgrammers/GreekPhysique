@@ -1,0 +1,15 @@
+const mongoose = require('mongoose');
+
+const ExerciseSchema = new mongoose.Schema({
+  name: String,
+  muscles_worked: [String],
+});
+
+const ExerciseGroupSchema = new mongoose.Schema({
+  name: String,
+  exercises: [ExerciseSchema],
+});
+
+const ExerciseGroup = mongoose.model('exerciseGroups', ExerciseGroupSchema);
+
+module.exports = ExerciseGroup;
